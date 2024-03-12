@@ -99,13 +99,13 @@ namespace DemoWebForms
             }
         }
 
-        protected void Delete_Record(object sender,EventArgs e)
+        protected void Delete_Record(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString)) 
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 string query = $"Delete From UserTable where Id = {int.Parse(TextBox3.Text)};";
-                using (SqlCommand com = new SqlCommand(query,connection))
+                using (SqlCommand com = new SqlCommand(query, connection))
                 {
                     com.ExecuteNonQuery();
                     connection.Close();
@@ -117,12 +117,33 @@ namespace DemoWebForms
             }
         }
 
-        protected void Get_Record(object sender,EventArgs e)
+        protected void Get_Record(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString)) 
-            { 
-              
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = $"Select * from UserTable where Id = {int.Parse(TextBox3.Text)};";
+                    using (SqlCommand comm = new SqlCommand(query, connection))
+                    {
+                        SqlDataReader reader = comm.ExecuteReader();
+                        while (reader.Read())
+                        {
+
+                            TextBox1.Text = reader.GetValue(1).ToString();
+                            TextBox2.Text = reader.GetValue(2).ToString();
+                            TextBox3.Text = reader.GetValue(0).ToString();
+                        }
+                    }
+                }
             }
+
+            catch(Exception ex)
+            {
+                Response.Write("Error"+ex);
+            }
+           
         }
     }
 }

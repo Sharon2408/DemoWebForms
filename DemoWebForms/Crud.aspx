@@ -67,6 +67,7 @@
                                     </tr>
                                 </thead>
                             </table>
+                            <asp:GridView ID="GridView2" runat="server"></asp:GridView>
                         </div>
                     </div>
                 </div>
